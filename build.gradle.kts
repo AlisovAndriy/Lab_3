@@ -16,6 +16,8 @@ repositories {
 dependencies {
     // Spring
     implementation("org.springframework:spring-webmvc:6.0.6")
+    implementation("org.springframework.security:spring-security-config:6.0.3")
+    implementation("org.springframework.security:spring-security-web:6.0.3")
     // Thymeleaf
     implementation("org.thymeleaf:thymeleaf-spring6:3.1.1.RELEASE")
     // Jetty & Servlet API
@@ -42,7 +44,7 @@ dependencies {
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin:2.14.2")
 
 
-    testImplementation(kotlin("test"))
+    testImplementation("org.jetbrains.kotlin:kotlin-test:1.8.10")
 }
 
 tasks.test {

@@ -9,6 +9,10 @@ import org.springframework.web.context.ContextLoaderListener
 import org.springframework.web.context.WebApplicationContext
 import org.springframework.web.context.support.AnnotationConfigWebApplicationContext
 import org.springframework.web.servlet.DispatcherServlet
+import jakarta.servlet.DispatcherType
+import org.eclipse.jetty.servlet.FilterHolder
+import org.springframework.web.filter.DelegatingFilterProxy
+import java.util.*
 
 private val logger: Logger
     get() = LogManager.getLogger()
@@ -33,11 +37,13 @@ private val servletContextHandler: ServletContextHandler
     get() {
         val webAppContext = webApplicationContext
         val dispatcherServlet = DispatcherServlet(webAppContext)
+        val filter = DelegatingFilterProxy("springSecurityFilterChain", webAppContext)
         val springServletHolder = ServletHolder("dispatcherServlet", dispatcherServlet)
         return ServletContextHandler(ServletContextHandler.SESSIONS).apply {
             errorHandler = null
             contextPath = "/"
             addServlet(springServletHolder, "/*")
+            addFilter(FilterHolder(filter), "/*", EnumSet.of(DispatcherType.REQUEST))
             addEventListener(ContextLoaderListener(webAppContext))
         }
     }
